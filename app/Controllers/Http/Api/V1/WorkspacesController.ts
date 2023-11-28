@@ -1,5 +1,7 @@
 import { HttpContext } from '@adonisjs/core/build/standalone'
 import Workspace from 'App/Models/Workspace'
+import CreateWorkspaceValidator from 'App/Validators/CreateWorkspaceValidator'
+import UpdateWorkspaceValidator from 'App/Validators/UpdateWorkspaceValidator'
 
 export default class WorkspacesController {
   public async index({} : HttpContext) {
@@ -16,17 +18,18 @@ export default class WorkspacesController {
   }
 
   public async store({ request }: HttpContext) {
-    const workspace = await Workspace.create({ name: request.input('name') })
+    const payload = await request.validate(CreateWorkspaceValidator)
+    const workspace = await Workspace.create(payload)
     return workspace
   }
 
   public async update({ response, request, params }: HttpContext) {
+    const payload = await request.validate(UpdateWorkspaceValidator)
     const workspace = await Workspace.find(params.id)
     if(!workspace) {
       return response.notFound()
     }
-    workspace.name = request.input('name')
-    await workspace.save()
+    await workspace.merge(payload)
     return workspace
   }
 
