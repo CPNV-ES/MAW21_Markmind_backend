@@ -5,7 +5,7 @@ import UpdateWorkspaceValidator from 'App/Validators/UpdateWorkspaceValidator'
 
 export default class WorkspacesController {
   public async index({} : HttpContextContract) {
-    const workspaces = await Workspace.query().preload('collections')
+    const workspaces = await Workspace.all()
     return workspaces
   }
 
@@ -14,6 +14,7 @@ export default class WorkspacesController {
     if(!workspace) {
       return response.notFound()
     }
+    workspace.load('collections')
     return workspace
   }
 
