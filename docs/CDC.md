@@ -24,7 +24,7 @@ There are three main elements:
 
 - **Resource**
 
-​	This is a markdown file.
+​	This is a markdown document.
 
 ```
 Workspaces
