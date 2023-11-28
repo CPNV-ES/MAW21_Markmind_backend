@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, HasOne, column, hasOne } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import Workspace from './Workspace'
 
 export default class Collection extends BaseModel {
@@ -9,8 +9,11 @@ export default class Collection extends BaseModel {
   @column()
   public name: string
 
-  @hasOne(() => Workspace)
-  public workspace: HasOne<typeof Workspace>
+  @column()
+  public workspaceId: number
+
+  @belongsTo(() => Workspace)
+  public workspace: BelongsTo<typeof Workspace>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
