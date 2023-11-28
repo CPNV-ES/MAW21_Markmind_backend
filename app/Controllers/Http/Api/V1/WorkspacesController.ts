@@ -29,7 +29,7 @@ export default class WorkspacesController {
     if(!workspace) {
       return response.notFound()
     }
-    await workspace.merge(payload)
+    await workspace.merge(payload).save()
     return workspace
   }
 
