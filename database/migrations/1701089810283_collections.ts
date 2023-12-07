@@ -8,8 +8,8 @@ export default class extends BaseSchema {
       table.increments('id')
       table.string('name', 255).notNullable()
       table.integer('workspace_id').unsigned().references('id').inTable('workspaces').onDelete('CASCADE')
-      table.timestamp('created_at', { useTz: true })
-      table.timestamp('updated_at', { useTz: true })
+      table.timestamp('created_at', { useTz: true }).defaultTo(this.raw('CURRENT_TIMESTAMP'))
+      table.timestamp('updated_at', { useTz: true }).defaultTo(this.raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
     })
   }
 

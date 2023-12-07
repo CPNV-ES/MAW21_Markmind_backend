@@ -9,8 +9,8 @@ export default class extends BaseSchema {
       table.string('name', 255).notNullable()
       table.text('content');
       table.integer('collection_id').unsigned().references('id').inTable('collections').onDelete('CASCADE')
-      table.timestamp('created_at', { useTz: true })
-      table.timestamp('updated_at', { useTz: true })
+      table.timestamp('created_at', { useTz: true }).defaultTo(this.raw('CURRENT_TIMESTAMP'))
+      table.timestamp('updated_at', { useTz: true }).defaultTo(this.raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
     })
   }
 
