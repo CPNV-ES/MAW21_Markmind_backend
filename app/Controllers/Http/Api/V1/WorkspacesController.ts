@@ -14,7 +14,8 @@ export default class WorkspacesController {
       .where("id", params.id)
       .preload("collections", (collection) => {
         collection.preload("resources");
-      });
+      })
+      .first()
 
     if (!workspace) {
       return response.notFound();
