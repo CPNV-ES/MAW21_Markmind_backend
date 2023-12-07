@@ -14,7 +14,7 @@ export default class WorkspacesController {
     if(!workspace) {
       return response.notFound()
     }
-    workspace.load('collections')
+    await workspace.load('collections')
     return workspace
   }
 

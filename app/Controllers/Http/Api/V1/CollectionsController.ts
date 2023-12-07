@@ -4,6 +4,7 @@ import CreateCollectionValidator from 'App/Validators/CreateCollectionValidator'
 import UpdateCollectionValidator from 'App/Validators/UpdateCollectionValidator'
 
 export default class CollectionsController {
+  
   public async index({}: HttpContextContract) {
     const collections = await Collection.all()
     return collections
@@ -44,6 +45,5 @@ export default class CollectionsController {
     await collection.delete()
     return response.status(204)
   }
-
 
 }
