@@ -17,6 +17,26 @@ This repository contains the code for our Express.js-based backend.
 Express JS (node)
 
 
+### Requirements
+
+- Node JS v20+
+- Running MySQL database
+
+
+## Install
+
+1. run ```npm i```
+2. create .env based on .env.example
+3. create the database
+4. run ```node ace migration:run```
+
+## Run
+
+run ```node ace serve --watch```
+
+## Tests
+
+Import ```docs/markmind_api.json``` in Postman to test the routes
 
 ## Authors
 
@@ -24,5 +44,6 @@ Express JS (node)
 
 [noah-bar](https://github.com/menoudyann/MAW21_backend/commits?author=noah-bar)
 
-[menoudyann](https://github.com/menoudyann/JAV1/commits?author=menoudyann) 
+[menoudyann](https://github.com/menoudyann/MAW21_frontend/commits?author=menoudyann)
 
+[sammichaud](https://github.com/CPNV-ES/MAW21_Markmind_backend/commits?author=sammichaud)
