@@ -10,11 +10,16 @@ export default class WorkspacesController {
   }
 
   public async show({ params, response }: HttpContextContract) {
-    const workspace = await Workspace.find(params.id)
+    const workspace = await Workspace.query()
+      .where("id", params.id)
+      .preload("collections", (collection) => {
+        collection.preload("resources");
+      })
+      .first()
+
     if(!workspace) {
       return response.notFound()
     }
-    await workspace.load('collections')
     return workspace
   }
 
@@ -42,5 +47,4 @@ export default class WorkspacesController {
     await workspace.delete()
     return response.status(204)
   }
-
 }
