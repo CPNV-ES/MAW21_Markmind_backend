@@ -45,5 +45,9 @@ export default class ResourcesController {
     await resource.delete()
     return response.status(204)
   }
+
+  public async markdown({ params, response } : HttpContextContract) {
+
+  }
   
 }
