@@ -2,6 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Resource from 'App/Models/Resource'
 import CreateResourceValidator from 'App/Validators/CreateResourceValidator'
 import UpdateResourceValidator from 'App/Validators/UpdateResourceValidator'
+import { toSnakeCase } from 'App/Helpers/string'
 
 export default class ResourcesController {
 
@@ -44,6 +45,17 @@ export default class ResourcesController {
     }
     await resource.delete()
     return response.status(204)
+  }
+
+  public async markdown({ params, response } : HttpContextContract) {
+    const resource = await Resource.find(params.id)
+    if(!resource) {
+      return response.notFound()
+    }
+
+    response.type('.md')
+    response.header('content-disposition', `inline; filename=${toSnakeCase(resource.name)}`)
+    response.send(resource.content)
   }
   
 }
