@@ -11,6 +11,8 @@ Route.group(() => {
   Route.resource('collections', 'Api/V1/CollectionsController').apiOnly()
   Route.resource('resources', 'Api/V1/ResourcesController').apiOnly()
   Route.get('/resources/:id/markdown', 'Api/V1/ResourcesController.markdown')
+  Route.post('/login', 'Api/V1/AuthController.login')
+  Route.post('/register', 'Api/V1/AuthController.register')
 })
 .prefix('v1')
 .prefix('api')
