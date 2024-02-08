@@ -6,16 +6,17 @@ import { toSnakeCase } from 'App/Helpers/string'
 
 export default class ResourcesController {
 
-  public async index({}: HttpContextContract) {
-    const resources = await Resource.all()
+  public async index({auth}: HttpContextContract) {
+    const resources = await Resource.query().where('userId', auth.user!.id)
     return resources
   }
 
-  public async show({ params, response }: HttpContextContract) {
+  public async show({ params, response, bouncer }: HttpContextContract) {
     const resource = await Resource.find(params.id)
     if(!resource) {
       return response.notFound()
     }
+    await bouncer.authorize('useResource', resource)
     await resource.load('collection')
     return resource
   }
@@ -27,32 +28,34 @@ export default class ResourcesController {
     return resource
   }
 
-  public async update({ response, request, params }: HttpContextContract) {
+  public async update({ response, request, params, bouncer }: HttpContextContract) {
     const payload = await request.validate(UpdateResourceValidator)
     const resource = await Resource.find(params.id)
     if(!resource) {
       return response.notFound()
     }
+    await bouncer.authorize('useResource', resource)
     await resource.merge(payload).save()
     await resource.load('collection')
     return resource
   }
 
-  public async destroy({params, response}: HttpContextContract) {
+  public async destroy({params, response, bouncer}: HttpContextContract) {
     const resource = await Resource.find(params.id)
     if(!resource) {
       return response.notFound()
     }
+    await bouncer.authorize('useResource', resource)
     await resource.delete()
     return response.status(204)
   }
 
-  public async markdown({ params, response } : HttpContextContract) {
+  public async markdown({ params, response, bouncer } : HttpContextContract) {
     const resource = await Resource.find(params.id)
     if(!resource) {
       return response.notFound()
     }
-
+    await bouncer.authorize('useResource', resource)
     response.type('.md')
     response.header('content-disposition', `inline; filename=${toSnakeCase(resource.name)}`)
     response.send(resource.content)

@@ -5,16 +5,17 @@ import UpdateCollectionValidator from 'App/Validators/UpdateCollectionValidator'
 
 export default class CollectionsController {
   
-  public async index({}: HttpContextContract) {
-    const collections = await Collection.all()
+  public async index({auth}: HttpContextContract) {
+    const collections = await Collection.query().where('userId', auth.user!.id)
     return collections
   }
 
-  public async show({ params, response }: HttpContextContract) {
+  public async show({ params, response, bouncer }: HttpContextContract) {
     const collection = await Collection.find(params.id)
     if(!collection) {
       return response.notFound()
     }
+    await bouncer.authorize('useCollection', collection)
     await collection.load('workspace')
     return collection
   }
@@ -26,22 +27,24 @@ export default class CollectionsController {
     return collection
   }
 
-  public async update({ response, request, params }: HttpContextContract) {
+  public async update({ response, request, params, bouncer }: HttpContextContract) {
     const payload = await request.validate(UpdateCollectionValidator)
     const collection = await Collection.find(params.id)
     if(!collection) {
       return response.notFound()
     }
+    await bouncer.authorize('useCollection', collection)
     await collection.merge(payload).save()
     await collection.load('workspace')
     return collection
   }
 
-  public async destroy({params, response}: HttpContextContract) {
+  public async destroy({params, response, bouncer }: HttpContextContract) {
     const collection = await Collection.find(params.id)
     if(!collection) {
       return response.notFound()
     }
+    await bouncer.authorize('useCollection', collection)
     await collection.delete()
     return response.status(204)
   }
