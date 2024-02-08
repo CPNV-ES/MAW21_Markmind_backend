@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import Collection from './Collection'
+import User from './User'
 
 export default class Resource extends BaseModel {
   @column({ isPrimary: true })
@@ -14,6 +15,12 @@ export default class Resource extends BaseModel {
 
   @column()
   public collectionId: number
+
+  @column()
+  public userId: number
+
+  @belongsTo(() => User)
+  public user: BelongsTo<typeof User>
 
   @belongsTo(() => Collection)
   public collection: BelongsTo<typeof Collection>
