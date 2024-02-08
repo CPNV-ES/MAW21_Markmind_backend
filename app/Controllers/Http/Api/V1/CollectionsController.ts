@@ -19,9 +19,9 @@ export default class CollectionsController {
     return collection
   }
 
-  public async store({ request }: HttpContextContract) {
+  public async store({ auth,request }: HttpContextContract) {
     const payload = await request.validate(CreateCollectionValidator)
-    const collection = await Collection.create(payload)
+    const collection = await Collection.create({...payload, userId: auth.user!.id})
     await collection.load('workspace')
     return collection
   }

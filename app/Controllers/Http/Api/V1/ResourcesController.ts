@@ -20,9 +20,9 @@ export default class ResourcesController {
     return resource
   }
 
-  public async store({ request }: HttpContextContract) {
+  public async store({ auth, request }: HttpContextContract) {
     const payload = await request.validate(CreateResourceValidator)
-    const resource = await Resource.create(payload)
+    const resource = await Resource.create({...payload, userId: auth.user!.id})
     await resource.load('collection')
     return resource
   }

@@ -23,9 +23,9 @@ export default class WorkspacesController {
     return workspace;
   }
 
-  public async store({ request }: HttpContextContract) {
+  public async store({ auth, request }: HttpContextContract) {
     const payload = await request.validate(CreateWorkspaceValidator);
-    const workspace = await Workspace.create(payload);
+    const workspace = await Workspace.create({...payload, userId: auth.user!.id});
     return workspace;
   }
 
