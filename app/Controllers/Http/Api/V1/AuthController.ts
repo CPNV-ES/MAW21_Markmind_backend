@@ -9,8 +9,13 @@ export default class AuthController {
     const password = request.input('password')
   
     try {
-      const token = await auth.attempt(email, password)
-      return token
+      const token = await auth.use('api').attempt(email, password,{
+        expiresIn: '7 days'
+      })
+      return {
+        token: token,
+        user: auth.user
+      }
     } catch {
       return response.unauthorized('Invalid credentials')
     }
@@ -19,7 +24,9 @@ export default class AuthController {
   public async register({request, auth}: HttpContextContract) {
     const payload = await request.validate(RegisterValidator)
     const user = await User.create(payload);
-    const token = await auth.login(user)
+    const token = await auth.use('api').generate(user, {
+      expiresIn: '7 days'
+    })
     return {
       token: token,
       user
