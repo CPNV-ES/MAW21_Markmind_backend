@@ -5,6 +5,21 @@ This project is a Markdown editor, like Notion or Obsidian. It allows us to crea
 It allows us to create Workspaces, containing folders to organise our notes and create documents in these folders.
 
 
+## How to run
+
+1. Clone the repository
+
+2.  Install the dependencies
+
+```
+npm i
+```
+
+3. Run the server
+```
+npm run dev
+```
+
 
 ## Backend
 
@@ -14,7 +29,7 @@ This repository contains the code for our Express.js-based backend.
 
 ## Technologies
 
-Express JS (node)
+Adonis JS (node)
 
 
 
